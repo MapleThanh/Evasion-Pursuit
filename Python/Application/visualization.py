@@ -18,6 +18,7 @@ class Visualizer:
         return [self.evader_dot] + self.pursuer_dots
 
     def update(self, frame):
+        # Call step() function in simulation
         self.simulation.step()
         
         # Update evader
@@ -35,8 +36,11 @@ class Visualizer:
         for dot in self.pursuer_dots[len(self.simulation.pursuers):]:
             dot.set_data([], [])
         
+        # Check for collision
         if self.simulation.is_captured():
             print("Evader captured! Resetting simulation...")
+            
+            # Reset the simulation
             self.simulation.reset()
         
         return [self.evader_dot] + self.pursuer_dots

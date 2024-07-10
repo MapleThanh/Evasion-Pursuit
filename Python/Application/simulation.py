@@ -16,7 +16,7 @@ class Simulation:
         self.capture_distance = 1.0
 
     def reset(self):
-        # Reset evader
+        # Set evader
         self.set_evader(random.uniform(0, self.width), 
                         random.uniform(0, self.height), 
                         max_speed=1.0, 
@@ -26,7 +26,7 @@ class Simulation:
         # Clear existing pursuers
         self.pursuers.clear()
 
-        # Add random number of pursuers (between 1 and 5)
+        # Set pursuers
         num_pursuers = random.randint(1, 5)
         for _ in range(num_pursuers):
             self.add_pursuer(random.uniform(0, self.width), 
@@ -45,18 +45,25 @@ class Simulation:
         pursuer.set_evader(self.evader)
 
     def step(self):
+        # Step update for evader
         self.evader.evade(self.boundaries)
+        
+        # Step update for pursuers
         for pursuer in self.pursuers:
             pursuer.pursue(self.boundaries)
         
-        # Boundary check
+        # Boundary check for evader
         self.evader.position = np.clip(self.evader.position, [self.boundaries[0], self.boundaries[2]], [self.boundaries[1], self.boundaries[3]])
+        
+        # Boundary check for pursuers
         for pursuer in self.pursuers:
             pursuer.position = np.clip(pursuer.position, [self.boundaries[0], self.boundaries[2]], [self.boundaries[1], self.boundaries[3]])
 
     def is_captured(self):
+        # Collision check between evader and every pursuer
         return any(np.linalg.norm(self.evader.position - p.position) < self.capture_distance for p in self.pursuers)
 
+    # Used to run without visualization
     def run(self, steps):
         for i in range(steps):
             self.step()

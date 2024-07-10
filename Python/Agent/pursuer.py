@@ -2,6 +2,7 @@ from agent import Agent
 
 class Pursuer(Agent):
     def __init__(self, x, y, max_speed, acceleration, strategy):
+        # Initialize
         super().__init__(x, y, max_speed, acceleration)
         self.evader = None
         self.strategy = strategy

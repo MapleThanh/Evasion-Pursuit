@@ -2,9 +2,11 @@ import numpy as np
 
 from strategy import EvasionStrategy
 
+# Default placeholder strategy for evasion
 class DefaultEvasionStrategy(EvasionStrategy):
     @staticmethod
     def calculate_move(evader, pursuers, boundaries):
+        # Stay still
         return np.zeros(2)
     
 class NearestNeighborStrategy(EvasionStrategy):

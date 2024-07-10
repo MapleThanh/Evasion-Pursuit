@@ -2,6 +2,7 @@ import numpy as np
 
 class Agent:
     def __init__(self, x, y, max_speed, acceleration):
+        # Initialize
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.array([0.0, 0.0], dtype=float)
         self.max_speed = max_speed

@@ -2,9 +2,11 @@ import numpy as np
 
 from strategy import PursuitStrategy
 
+# Default placeholder strategy for pursuit
 class DefaultPursuitStrategy(PursuitStrategy):
     @staticmethod
     def calculate_move(evader, pursuers, boundaries):
+        # Stay still
         return np.zeros(2)
     
 class PurePursuit(PursuitStrategy):

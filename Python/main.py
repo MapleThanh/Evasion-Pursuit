@@ -13,19 +13,24 @@ from Application.visualization import Visualizer
 
 def main():
     print("Starting simulation setup...")
+    
     # Create simulation
     sim = Simulation(500, 500)
-    sim.reset()  # This will set up the initial evader and pursuers
+    
+    # Reset simulation
+    sim.reset() 
     print("Simulation setup complete.")
-
     print("Creating visualizer...")
+    
     # Create visualizer
     vis = Visualizer(sim)
     print("Visualizer created.")
 
-    print("Starting animation...")
     # Run animation indefinitely
-    vis.animate(frames=None)  # None means the animation will run until the window is closed
+    print("Starting animation...")
+    vis.animate(frames=None)
+    
+    # Stop animation successfully  
     print("Animation complete.")
 
 if __name__ == "__main__":

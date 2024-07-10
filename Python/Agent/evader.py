@@ -2,6 +2,7 @@ from agent import Agent
 
 class Evader(Agent):
     def __init__(self, x, y, max_speed, acceleration, strategy):
+        # Initialize
         super().__init__(x, y, max_speed, acceleration)
         self.pursuers = []
         self.strategy = strategy
