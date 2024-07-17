@@ -10,12 +10,13 @@ sys.path.append(os.path.join(current_dir, 'Strategy'))
 
 from Application.simulation import Simulation
 from Application.visualization import Visualizer
+from Utils.constants import SIMULATION_WIDTH, SIMULATION_HEIGHT
 
 def main():
     print("Starting simulation setup...")
     
     # Create simulation
-    sim = Simulation(500, 500)
+    sim = Simulation(SIMULATION_WIDTH, SIMULATION_WIDTH)
     
     # Reset simulation
     sim.reset() 

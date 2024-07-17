@@ -5,34 +5,34 @@ from Agent.evader import Evader
 from Agent.pursuer import Pursuer
 from Strategy.evasion_strategy import NearestNeighborStrategy, DefaultEvasionStrategy
 from Strategy.pursuit_trategy import PurePursuit, DefaultPursuitStrategy
-
+from Utils.constants import *
 class Simulation:
-    def __init__(self, width, height):
+    def __init__(self, width=SIMULATION_WIDTH, height=SIMULATION_HEIGHT):
         self.width = width
         self.height = height
         self.boundaries = (0, width, 0, height)  # (min_x, max_x, min_y, max_y)
         self.evader = None
         self.pursuers = []
-        self.capture_distance = 1.0
+        self.capture_distance = CAPTURE_DISTANCE
 
     def reset(self):
         # Set evader
         self.set_evader(random.uniform(0, self.width), 
                         random.uniform(0, self.height), 
-                        max_speed=1.0, 
-                        acceleration=0.5,
+                        max_speed=EVADER_MAX_SPEED, 
+                        acceleration=EVADER_ACCELERATION,
                         strategy=NearestNeighborStrategy)
 
         # Clear existing pursuers
         self.pursuers.clear()
 
         # Set pursuers
-        num_pursuers = random.randint(1, 5)
+        num_pursuers = random.randint(MIN_PURSUERS, MAX_PURSUERS)
         for _ in range(num_pursuers):
             self.add_pursuer(random.uniform(0, self.width), 
                             random.uniform(0, self.height), 
-                            max_speed=0.8, 
-                            acceleration=0.5,
+                            max_speed=PURSUER_MAX_SPEED, 
+                            acceleration=PURSUER_ACCELERATION,
                             strategy=PurePursuit)
             
     def set_evader(self, x, y, max_speed, acceleration, strategy=DefaultEvasionStrategy):
