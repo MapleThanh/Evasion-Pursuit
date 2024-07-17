@@ -6,6 +6,8 @@ from Agent.pursuer import Pursuer
 from Strategy.evasion_strategy import NearestNeighborStrategy, DefaultEvasionStrategy
 from Strategy.pursuit_trategy import PurePursuit, DefaultPursuitStrategy
 from Utils.constants import *
+from Utils.random import *
+
 class Simulation:
     def __init__(self, width=SIMULATION_WIDTH, height=SIMULATION_HEIGHT):
         self.width = width
@@ -17,9 +19,10 @@ class Simulation:
 
     def reset(self):
         # Set evader
-        self.set_evader(random.uniform(0, self.width), 
-                        random.uniform(0, self.height), 
-                        max_speed=EVADER_MAX_SPEED, 
+        evader_speed = get_random_evader_speed(EVADER_RANDOM_MIN_SPEED, EVADER_RANDOM_MAX_SPEED)
+        evader_position = get_random_evader_position(self.width, self.height)
+        self.set_evader(evader_position[0], evader_position[1], 
+                        max_speed=evader_speed, 
                         acceleration=EVADER_ACCELERATION,
                         strategy=NearestNeighborStrategy)
 
@@ -27,11 +30,12 @@ class Simulation:
         self.pursuers.clear()
 
         # Set pursuers
-        num_pursuers = random.randint(MIN_PURSUERS, MAX_PURSUERS)
+        num_pursuers = get_random_pursuer_count(MIN_PURSUERS, MAX_PURSUERS)
         for _ in range(num_pursuers):
-            self.add_pursuer(random.uniform(0, self.width), 
-                            random.uniform(0, self.height), 
-                            max_speed=PURSUER_MAX_SPEED, 
+            pursuer_speed = get_random_pursuer_speed(PURSUER_RANDOM_MIN_SPEED, PURSUER_RANDOM_MAX_SPEED)
+            pursuer_position = get_random_pursuer_position(self.width, self.height)
+            self.add_pursuer(pursuer_position[0], pursuer_position[1], 
+                            max_speed=pursuer_speed, 
                             acceleration=PURSUER_ACCELERATION,
                             strategy=PurePursuit)
             
