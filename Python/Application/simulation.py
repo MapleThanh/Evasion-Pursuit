@@ -62,6 +62,13 @@ class Simulation:
         # Boundary check for pursuers
         for pursuer in self.pursuers:
             pursuer.position = np.clip(pursuer.position, [self.boundaries[0], self.boundaries[2]], [self.boundaries[1], self.boundaries[3]])
+            
+        # Check for capture
+        if self.is_captured():
+            print("Evader captured! Resetting simulation...")
+            self.reset()
+            return True  # Indicate that a reset occurred
+        return False
 
     def is_captured(self):
         # Collision check between evader and every pursuer
