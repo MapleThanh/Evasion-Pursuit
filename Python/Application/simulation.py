@@ -38,6 +38,8 @@ class Simulation:
                             max_speed=pursuer_speed, 
                             acceleration=PURSUER_ACCELERATION,
                             strategy=PurePursuit)
+        # Update references to pursuers for each pursuer
+        self.update_pursuer_references()
             
     def set_evader(self, x, y, max_speed, acceleration, strategy=DefaultEvasionStrategy):
         self.evader = Evader(x, y, max_speed, acceleration, strategy)
@@ -63,13 +65,20 @@ class Simulation:
         for pursuer in self.pursuers:
             pursuer.position = np.clip(pursuer.position, [self.boundaries[0], self.boundaries[2]], [self.boundaries[1], self.boundaries[3]])
             
+        print(self.pursuers[0].position)
+        
         # Check for capture
         if self.is_captured():
             print("Evader captured! Resetting simulation...")
             self.reset()
             return True  # Indicate that a reset occurred
         return False
-
+    
+    def update_pursuer_references(self):
+        for pursuer in self.pursuers:
+            other_pursuers = [p for p in self.pursuers if p is not pursuer]
+            pursuer.set_all_pursuers(other_pursuers)
+            
     def is_captured(self):
         # Collision check between evader and every pursuer
         return any(np.linalg.norm(self.evader.position - p.position) < self.capture_distance for p in self.pursuers)

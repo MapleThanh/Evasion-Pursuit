@@ -5,10 +5,14 @@ class Pursuer(Agent):
         # Initialize
         super().__init__(x, y, max_speed, acceleration)
         self.evader = None
+        self.pursuers = []
         self.strategy = strategy
 
     def set_evader(self, evader):
         self.evader = evader
+        
+    def set_all_pursuers(self, pursuers):
+        self.pursuers = pursuers
 
     def pursue(self, boundaries):
         if self.evader is None:
