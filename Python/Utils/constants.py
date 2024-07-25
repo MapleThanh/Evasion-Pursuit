@@ -20,7 +20,7 @@ PURSUER_ACCELERATION = 0.7
 MAX_STEPS_PER_EPISODE = 1000
 
 MIN_PURSUERS = 1
-MAX_PURSUERS = 5
+MAX_PURSUERS = 3
 
 # Visualization constants
 EVADER_SIZE = 100
@@ -41,4 +41,4 @@ PURSUER_COLORS = [
     '#C62828',  # Rich red
     '#B71C1C'   # Very deep red
 ]
-ANIMATION_INTERVAL = 50  # milliseconds
+ANIMATION_INTERVAL = 10  # milliseconds
