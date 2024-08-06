@@ -3,9 +3,8 @@ from agent import Agent
 class Evader(Agent):
     def __init__(self, x, y, max_speed, acceleration, strategy):
         # Initialize
-        super().__init__(x, y, max_speed, acceleration)
+        super().__init__(x, y, max_speed, acceleration, strategy)
         self.pursuers = []
-        self.strategy = strategy
 
     def add_pursuer(self, pursuer):
         if pursuer not in self.pursuers:

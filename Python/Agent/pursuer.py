@@ -3,10 +3,9 @@ from agent import Agent
 class Pursuer(Agent):
     def __init__(self, x, y, max_speed, acceleration, strategy):
         # Initialize
-        super().__init__(x, y, max_speed, acceleration)
+        super().__init__(x, y, max_speed, acceleration, strategy)
         self.evader = None
         self.pursuers = []
-        self.strategy = strategy
 
     def set_evader(self, evader):
         self.evader = evader
