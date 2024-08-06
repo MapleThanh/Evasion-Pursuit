@@ -1,12 +1,13 @@
 import numpy as np
 
 class Agent:
-    def __init__(self, x, y, max_speed, acceleration):
+    def __init__(self, x, y, max_speed, acceleration, strategy):
         # Initialize
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.array([0.0, 0.0], dtype=float)
         self.max_speed = max_speed
         self.acceleration = acceleration
+        self.strategy = strategy
 
     def move(self, desired_direction):
         # Normalize desired direction
@@ -26,3 +27,6 @@ class Agent:
 
         # Update position
         self.position += self.velocity
+    
+    def set_strategy(self, strategy):
+        self.strategy = strategy
