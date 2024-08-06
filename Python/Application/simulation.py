@@ -4,7 +4,7 @@ import random
 from Agent.evader import Evader
 from Agent.pursuer import Pursuer
 from Strategy.evasion_strategy import NearestNeighborStrategy, DefaultEvasionStrategy
-from Strategy.pursuit_trategy import PurePursuit, DefaultPursuitStrategy
+from Strategy.pursuit_trategy import PurePursuit, DefaultPursuitStrategy, VoronoiPursuitStrategy
 from Utils.constants import *
 from Utils.random import *
 
@@ -16,6 +16,11 @@ class Simulation:
         self.evader = None
         self.pursuers = []
         self.capture_distance = CAPTURE_DISTANCE
+        
+        # Initialize strategies
+        self.pursuit_strategy = None
+        self.evasion_strategy = None
+        self.voronoi_strategy = None
 
     def reset(self):
         # Set evader
@@ -24,7 +29,7 @@ class Simulation:
         self.set_evader(evader_position[0], evader_position[1], 
                         max_speed=evader_speed, 
                         acceleration=EVADER_ACCELERATION,
-                        strategy=NearestNeighborStrategy)
+                        strategy=self.evasion_strategy)
 
         # Clear existing pursuers
         self.pursuers.clear()
@@ -37,18 +42,41 @@ class Simulation:
             self.add_pursuer(pursuer_position[0], pursuer_position[1], 
                             max_speed=pursuer_speed, 
                             acceleration=PURSUER_ACCELERATION,
-                            strategy=PurePursuit)
+                            strategy=self.pursuit_strategy)
+            
         # Update references to pursuers for each pursuer
         self.update_pursuer_references()
             
-    def set_evader(self, x, y, max_speed, acceleration, strategy=DefaultEvasionStrategy):
+    def set_evader(self, x, y, max_speed, acceleration, strategy):
         self.evader = Evader(x, y, max_speed, acceleration, strategy)
         
-    def add_pursuer(self, x, y, max_speed, acceleration, strategy=DefaultPursuitStrategy):
+    def add_pursuer(self, x, y, max_speed, acceleration, strategy):
         pursuer = Pursuer(x, y, max_speed, acceleration, strategy)
         self.pursuers.append(pursuer)
         self.evader.add_pursuer(pursuer)
         pursuer.set_evader(self.evader)
+        
+    def set_pursuit_strategy(self, strategy):
+        match strategy:
+            case "voronoi":
+                if self.voronoi_strategy is None:
+                    self.voronoi_strategy = VoronoiPursuitStrategy(20, self.boundaries)
+                self.pursuit_strategy = self.voronoi_strategy
+            case "pure":
+                self.pursuit_strategy = PurePursuit()
+            case "default":
+                self.pursuit_strategy = DefaultPursuitStrategy()
+            case _:
+                raise ValueError(f"Unknown pursuit strategy: {strategy}")
+
+    def set_evasion_strategy(self, strategy):
+        match strategy:
+            case "nearest-neighbor":
+                self.evasion_strategy = NearestNeighborStrategy()
+            case "default":
+                self.evasion_strategy = DefaultEvasionStrategy()
+            case _:
+                raise ValueError(f"Unknown evasion strategy: {strategy}")
 
     def step(self):
         # Step update for evader
@@ -64,9 +92,7 @@ class Simulation:
         # Boundary check for pursuers
         for pursuer in self.pursuers:
             pursuer.position = np.clip(pursuer.position, [self.boundaries[0], self.boundaries[2]], [self.boundaries[1], self.boundaries[3]])
-            
-        print(self.pursuers[0].position)
-        
+                    
         # Check for capture
         if self.is_captured():
             print("Evader captured! Resetting simulation...")
